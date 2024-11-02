@@ -1,36 +1,28 @@
 #include <utility/type.h>
 
 #include <string>
+#include <vector>
+
+#pragma once
+
 using namespace utility;
 namespace utility {
 class bigint {
  private:
-  // Stored as base-255 where least significant bit is at the back
-  std::string data;
+  // Least significant bit is at the back, with always 1 zero in front
+  std::vector<TStorage> data;
   // sign; true = positive
   bool sign;
 
-  // Remove extra zeros
-  void simplify() {
-    std::string::iterator last = data.begin();
-    for (auto it = data.begin(); it < data.end(); ++it) {
-      if (*it == 0) {
-        ++last;
-      } else {
-        data.erase(data.begin(), last);
-      }
-    }
-  }
-
  public:
   bigint(const bigint &n) {
-    data = n._getDataNoSimplify();
+    data = n.getData();
     sign = n.getSign();
   }
   bigint(LL n);
-  ~bigint();
+  ~bigint(){}
 
-  bigint &operator=(const bigint &n) {}
+  bigint &operator=(const bigint &n);
 
   // Main operators
 
@@ -53,23 +45,19 @@ class bigint {
 
   // Comparison
   bool operator>(const bigint &n) const;
-  bool operator>=(bigint n) { return *this > n || *this == n; }
-  bool operator<(bigint n) { return !(*this >= n); }
-  bool operator<=(bigint n) { return !(*this > n); };
-  bool operator==(bigint n) {
-    simplify();
-    return this->data == n.getData() && this->sign == n.getSign();
-  };
+  bool operator>=(bigint n) const { return *this > n || *this == n; }
+  bool operator<(bigint n) const { return !(*this >= n); }
+  bool operator<=(bigint n) const { return !(*this > n); };
+  bool operator==(bigint n) const;
 
   // misc
-  bigint pow(const bigint &base, const bigint &exp, const bigint &mod);
-
+  static bigint simplify(const bigint &n);
+  static bigint pow(const bigint &base, const bigint &exp, const bigint &mod);
+  bool toLL(LL &res) const;
   // getters
-  std::string getData() {
-    simplify();
+  std::vector<TStorage> getData() const noexcept {
     return this->data;
   }
-  std::string _getDataNoSimplify() const { return this->data; }
   bool getSign() const noexcept { return this->sign; }
 };
 };  // namespace utility
