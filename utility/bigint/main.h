@@ -1,33 +1,40 @@
-#include <utility/type.h>
+#include "../type.h"
 
 #include <string>
 #include <vector>
+#include <cassert>
+#include <numeric>
+#include <limits>
 
 #pragma once
+#define CHECK_T_VALID (assert(std::numeric_limits<utility::TStorage>::max() < std::numeric_limits<LL>::max()))
+#define TSTORAGE_SZ (static_cast<LL>(std::numeric_limits<utility::TStorage>::max()))
 
-using namespace utility;
 namespace utility {
 class bigint {
  private:
   // Least significant bit is at the back, with always 1 zero in front
+  // Example (with base-255): 263 is {0, 1, 8}
   std::vector<TStorage> data;
   // sign; true = positive
   bool sign;
 
  public:
   bigint(const bigint &n) {
+    CHECK_T_VALID;
     data = n.getData();
     sign = n.getSign();
   }
+  bigint(const std::vector<TStorage> &data);
   bigint(LL n);
   ~bigint(){}
 
-  bigint &operator=(const bigint &n);
+  void operator=(const bigint &n);
 
   // Main operators
 
   bigint operator+(const bigint &n) const;
-  bigint operator-(const bigint &n) const { return *this + (-n); }
+  bigint operator-(const bigint &n) const;
   bigint operator*(const bigint &n) const;
   // Preforms floor division
   bigint operator/(const bigint &n) const;

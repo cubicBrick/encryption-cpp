@@ -1,16 +1,36 @@
 #include "main.h"
 
-inline bigint& utility::bigint::operator=(const bigint& n) {
+inline void utility::bigint::operator=(const bigint& n) {
   this->data = bigint::simplify(n).data;
   this->sign = n.getSign();
 }
 
-bigint utility::bigint::operator+(const bigint& n) const {
-    bigint res{0LL};
+utility::bigint utility::bigint::operator+(const bigint& n) const {
     std::vector<TStorage> nData = n.getData();
     if(nData.size() > this->data.size()){
         return n + *this;
     }
+    LL tsz = this->data.size();
+    LL nsz = nData.size();
+    std::vector<TStorage> res(tsz+ 1);
+    LL carry = 0;
     // Current number has more digits for sure
-    
+    for(LL i = 0; i < tsz; ++i){
+        if(i < nsz){
+            LL _sum = carry + nData[nsz - 1 - i] + this->data[tsz-1-i];
+            if(_sum < TSTORAGE_SZ){
+                res[tsz - i] = _sum;
+                carry = 0;
+            }
+            else{
+                res[tsz - i] = _sum - TSTORAGE_SZ;
+                carry = 1;
+            }
+        }
+        else{
+            res[tsz-i] = this->data[tsz-1-i] + carry;
+            carry = 0;
+        }
+    }
+    return simplify(bigint(res));
 }

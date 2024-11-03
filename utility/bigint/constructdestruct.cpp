@@ -1,7 +1,7 @@
 #include "main.h"
 
 utility::bigint::bigint(LL n) {
-    // Set the sign
+    CHECK_T_VALID;
     sign = (n >= 0);
     if (n < 0) n = -n;
     while (n > 0) {
