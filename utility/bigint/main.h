@@ -3,6 +3,7 @@
 #include <numeric>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "../type.h"
 

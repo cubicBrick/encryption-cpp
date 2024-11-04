@@ -6,6 +6,9 @@ inline void utility::bigint::operator=(const bigint& n) {
 }
 
 utility::bigint utility::bigint::operator+(const bigint& n) const {
+    if(this->sign && !n.getSign()) return *this - n;
+    if(!this->sign && n.getSign()) return -(n - *this);
+    if(!this->sign && !n.getSign()) return -(*this + n);
     std::vector<TStorage> nData = n.getData();
     if(nData.size() > this->data.size()){
         return n + *this;
@@ -32,5 +35,5 @@ utility::bigint utility::bigint::operator+(const bigint& n) const {
             carry = 0;
         }
     }
-    return simplify(bigint(res));
+    return simplify(bigint(res, true));
 }
