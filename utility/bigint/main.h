@@ -1,14 +1,17 @@
-#include "../type.h"
-
+#include <cassert>
+#include <limits>
+#include <numeric>
 #include <string>
 #include <vector>
-#include <cassert>
-#include <numeric>
-#include <limits>
+
+#include "../type.h"
 
 #pragma once
-#define CHECK_T_VALID (assert(std::numeric_limits<utility::TStorage>::max() < std::numeric_limits<LL>::max()))
-#define TSTORAGE_SZ (static_cast<LL>(std::numeric_limits<utility::TStorage>::max()))
+#define CHECK_T_VALID                                     \
+  (assert(std::numeric_limits<utility::TStorage>::max() < \
+          std::numeric_limits<LL>::max()))
+#define TSTORAGE_SZ \
+  (static_cast<LL>(std::numeric_limits<utility::TStorage>::max()))
 
 namespace utility {
 class bigint {
@@ -25,9 +28,9 @@ class bigint {
     data = n.getData();
     sign = n.getSign();
   }
-  bigint(const std::vector<TStorage> &data);
+  bigint(const std::vector<TStorage> &data, const bool &sign = true);
   bigint(LL n);
-  ~bigint(){}
+  ~bigint() {}
 
   void operator=(const bigint &n);
 
@@ -59,12 +62,11 @@ class bigint {
 
   // misc
   static bigint simplify(const bigint &n);
+  static std::vector<TStorage> simplify(std::vector<TStorage> n);
   static bigint pow(const bigint &base, const bigint &exp, const bigint &mod);
   bool toLL(LL &res) const;
   // getters
-  std::vector<TStorage> getData() const noexcept {
-    return this->data;
-  }
+  std::vector<TStorage> getData() const noexcept { return this->data; }
   bool getSign() const noexcept { return this->sign; }
 };
 };  // namespace utility

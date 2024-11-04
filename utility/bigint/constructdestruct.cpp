@@ -5,12 +5,14 @@ utility::bigint::bigint(LL n) {
     sign = (n >= 0);
     if (n < 0) n = -n;
     while (n > 0) {
-      data.push_back(static_cast<TStorage>(n % BASE));
-      n /= BASE;
+      data.push_back(static_cast<TStorage>(n % TSTORAGE_SZ));
+      n /= TSTORAGE_SZ;
     }
+    data.push_back(0);
+    std::reverse(data.begin(), data.end());
+}
 
-    if (data.empty()) {
-      data.push_back(0);
-      sign = true;
-    }
+utility::bigint::bigint(const std::vector<utility::TStorage> &data, const bool &sign){
+  this->sign = sign;
+  this->data = utility::bigint::simplify(data);
 }
