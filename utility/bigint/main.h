@@ -1,18 +1,18 @@
+#include <algorithm>
 #include <cassert>
 #include <limits>
 #include <numeric>
 #include <string>
 #include <vector>
-#include <algorithm>
 
 #include "../type.h"
 
 #pragma once
-#define CHECK_T_VALID                                     \
-  (assert(std::numeric_limits<utility::TStorage>::max() < \
-          std::numeric_limits<LL>::max()))
-#define TSTORAGE_SZ \
-  (static_cast<LL>(std::numeric_limits<utility::TStorage>::max()))
+
+constexpr utility::LL TSTORAGE_SZ =
+    (static_cast<utility::LL>(std::numeric_limits<utility::TStorage>::max()));
+#define CHECK_T_VALID \
+  (assert(TSTORAGE_SZ < std::numeric_limits<utility::LL>::max()))
 
 namespace utility {
 class bigint {

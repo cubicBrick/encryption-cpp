@@ -9,8 +9,10 @@ int main(void){
     LL a, b;
     cin >> a >> b;
     LL ans = 0;
-    if ((bigint(a) + bigint(b)).toLL(ans))
+    cout << a << ' ' << b << '\n';
+    if ((bigint(a) - bigint(b)).toLL(ans))
         cout << ans;
     else
-        cout << "TOO LARGE";
+        cout << "TOO SMALL";
+    cout << "\nDONE\n";
 }

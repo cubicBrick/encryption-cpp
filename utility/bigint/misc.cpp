@@ -34,3 +34,7 @@ std::vector<utility::TStorage> utility::bigint::simplify(
   n.erase(n.begin(), itend);
   return n;
 }
+
+utility::bigint utility::bigint::operator-() const {
+  return bigint(this->data, !this->sign);
+}
